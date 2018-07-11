@@ -22,11 +22,23 @@ var server = http.createServer(function(request, response){
   console.log('方方说：含查询字符串的路径\n' + pathWithQuery)
 
   if(path === '/'){
+    var string = fs.readFileSync('./index.html')
     response.statusCode = 200
     response.setHeader('Content-Type', 'text/html;charset=utf-8')
-    response.write('哈哈哈')
-    response.end()
-  }else{
+    response.end(string)
+  }else if(path === '/signUp' && method === 'POST'){
+    whole = ''
+      request.on('data', (chunk) => {
+          whole += chunk.toString()
+      })
+
+      request.on('end', () =>{
+        console.log('拿到的数据')
+          console.log(whole)
+          response.end('here')
+      })
+  }
+  else{
     response.statusCode = 404
     response.setHeader('Content-Type', 'text/html;charset=utf-8')
     response.write('呜呜呜')
